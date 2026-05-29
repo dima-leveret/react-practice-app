@@ -1,23 +1,33 @@
 import "./App.css";
-import { useState, useEffect } from "react";
+import { useFetch } from "./hooks/fetch";
 
 function App() {
-  const [users, setUsers] = useState(null);
+  const url = "https://dummyjson.com/users";
 
-  console.log(users);
+  type User = {
+    id: number;
+    firstName: string;
+    email: string;
+  };
 
-  useEffect(() => {
-    fetch("https://dummyjson.com/users")
-      .then((res) => res.json())
-      .then((data) => setUsers(data.users));
-  }, []);
+  const { data, isLoading, error } = useFetch<User>(url);
+
+  console.log(isLoading);
+  console.log(data);
 
   return (
     <>
       <section>
         <h1>User searcher</h1>
+        {isLoading ?? <p>Loading...</p>}
+        {error ?? <p>{error}</p>}
+        {data?.map((user: User) => (
+          <div className="userContainer" key={user.id}>
+            <p>{user.firstName}</p>
+            <p>{user.email}</p>
+          </div>
+        ))}
       </section>
-      <section>user input with search btn </section>
     </>
   );
 }
