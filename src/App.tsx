@@ -1,32 +1,42 @@
 import "./App.css";
-import { useFetch } from "./hooks/fetch";
+// import { useFetch } from "./hooks/fetch";
+import { useUserSearch } from "./hooks/user";
+import { type User } from "./types";
+import { useState } from "react";
+import { UsersList } from "./components/usersList";
 
 function App() {
-  const url = "https://dummyjson.com/users";
+  const [inputValue, setInputValue] = useState("");
 
-  type User = {
-    id: number;
-    firstName: string;
-    email: string;
+  // const url = "https://dummyjson.com/users";
+  // const { data, isLoading, error } = useFetch<User>(url);
+
+  const { data, isLoading, error } = useUserSearch<User[]>(inputValue);
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>,
+  ) => {
+    console.log(e.target.value);
+
+    setInputValue(e.target.value);
   };
-
-  const { data, isLoading, error } = useFetch<User>(url);
-
-  console.log(isLoading);
-  console.log(data);
 
   return (
     <>
+      <h1>User searcher</h1>
       <section>
-        <h1>User searcher</h1>
-        {isLoading ?? <p>Loading...</p>}
-        {error ?? <p>{error}</p>}
-        {data?.map((user: User) => (
-          <div className="userContainer" key={user.id}>
-            <p>{user.firstName}</p>
-            <p>{user.email}</p>
-          </div>
-        ))}
+        <label htmlFor="search" className="searchLabel">
+          Search Users
+          <input
+            type="text"
+            id="search"
+            name="search"
+            onChange={(e) => handleInputChange(e)}
+          />
+        </label>
+      </section>
+      <section>
+        <UsersList data={data} isLoading={isLoading} error={error} />
       </section>
     </>
   );

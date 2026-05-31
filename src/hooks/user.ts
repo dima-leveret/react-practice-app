@@ -1,22 +1,26 @@
 import { useState, useEffect } from "react";
 
-export const useFetch = <T>(url: string) => {
-  const [data, setData] = useState<T | null>(null);
+export const useUserSearch = <T>(query: string) => {
+  const [data, setData] = useState<null | T>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch(url)
+    fetch(`https://dummyjson.com/users/search?q=${query}`)
       .then((res) => res.json())
-      .then((data) => setData(data.users))
+      .then((data) => {
+        setTimeout(() => {
+          setData(data.users);
+        }, 1000);
+      })
       .catch((err) => {
         setIsLoading(false);
-        setError("Something went wrong during fetching!");
+        setError("Something went wrong!");
         console.log(error);
         console.log(err);
       })
       .finally(() => setIsLoading(false));
-  }, [url, error]);
+  }, [query, error]);
 
   return { data, isLoading, error };
 };
