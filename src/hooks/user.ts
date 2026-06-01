@@ -4,7 +4,7 @@ import { type User } from "../types";
 export const useUserSearch = <T>(query: string) => {
   const [data, setData] = useState<Array<T>>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>("");
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetch(`https://dummyjson.com/users/search?q=${query}`)
@@ -18,7 +18,7 @@ export const useUserSearch = <T>(query: string) => {
               email: user.email,
             };
           });
-          console.log(searchedUsers);
+
           setData(searchedUsers);
         }, 500);
       })
