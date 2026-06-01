@@ -10,7 +10,7 @@ export const useUserSearch = <T>(query: string) => {
     fetch(`https://dummyjson.com/users/search?q=${query}`)
       .then((res) => res.json())
       .then((data) => {
-        setTimeout(() => {
+        const timeoutId = setTimeout(() => {
           const searchedUsers = data.users.map((user: User) => {
             return {
               id: user.id,
@@ -21,6 +21,7 @@ export const useUserSearch = <T>(query: string) => {
 
           setData(searchedUsers);
         }, 500);
+        return () => clearTimeout(timeoutId);
       })
       .catch((err) => {
         setIsLoading(false);

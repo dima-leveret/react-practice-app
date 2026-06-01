@@ -4,6 +4,7 @@ import { useUserSearch } from "./hooks/user";
 import { type User } from "./types";
 import { useState } from "react";
 import { UsersList } from "./components/UsersList";
+import { createPortal } from "react-dom";
 
 function App() {
   const [inputValue, setInputValue] = useState("");
@@ -36,6 +37,7 @@ function App() {
       <section>
         <UsersList data={data} isLoading={isLoading} error={error} />
       </section>
+      {createPortal(<p>this is portal</p>, document.body)}
     </>
   );
 }
