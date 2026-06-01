@@ -3,7 +3,7 @@ import "./App.css";
 import { useUserSearch } from "./hooks/user";
 import { type User } from "./types";
 import { useState } from "react";
-import { UsersList } from "./components/usersList";
+import { UsersList } from "./components/UsersList";
 
 function App() {
   const [inputValue, setInputValue] = useState("");
@@ -11,13 +11,11 @@ function App() {
   // const url = "https://dummyjson.com/users";
   // const { data, isLoading, error } = useFetch<User>(url);
 
-  const { data, isLoading, error } = useUserSearch<User[]>(inputValue);
+  const { data, isLoading, error } = useUserSearch<User>(inputValue);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>,
   ) => {
-    console.log(e.target.value);
-
     setInputValue(e.target.value);
   };
 
@@ -31,7 +29,7 @@ function App() {
             type="text"
             id="search"
             name="search"
-            onChange={(e) => handleInputChange(e)}
+            onChange={handleInputChange}
           />
         </label>
       </section>
